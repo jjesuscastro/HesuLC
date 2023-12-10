@@ -15,7 +15,7 @@ namespace RemoteTerminal.Patches
     [HarmonyPatch(typeof(HUDManager))]
     internal class HUDManagerPatch
     {
-        public static string[] moons = new string[] { "company", "experimentation", "assurance", "vow", "offense", "march", "rend", "dine", "titan" };
+        public static string[] moons = new string[] { "Company", "Experimentation", "Assurance", "Vow", "Offense", "March", "Rend", "Dine", "Titan" };
 
         static Terminal terminal;
 
@@ -41,22 +41,13 @@ namespace RemoteTerminal.Patches
         }
 
 
-        static bool menuOpen = false;
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
         static void updatePatch()
         {
             if (UnityInput.Current.GetKeyDown("F10"))
             {
-                if (!menuOpen)
-                {
-                    UI.openMenu();
-                    menuOpen = true;
-                } else
-                {
-                    UI.closeMenu();
-                    menuOpen = false;
-                }
+                RemoteTerminalBase.ToggleUI();
             }
         }
 
@@ -93,7 +84,7 @@ namespace RemoteTerminal.Patches
 
             if (action.Equals("/moons"))
             {
-                if (moons.Any(input.Contains))
+                if (moons.Contains(input, StringComparer.OrdinalIgnoreCase))
                 {
                     await Task.Delay(250);
                     terminal.currentText = "";
