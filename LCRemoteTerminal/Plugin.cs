@@ -13,7 +13,7 @@ namespace RemoteTerminal
         UnityEngine.GameObject menu;
         private const string modGUID = "hesukastro.RemoteTerminal";
         private const string modName = "Remote Terminal";
-        private const string modVersion = "1.1.2";
+        private const string modVersion = "1.1.3";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;
@@ -52,7 +52,7 @@ namespace RemoteTerminal
             UiBase = UniversalUI.RegisterUI("RemoteTerminal.UI", UiUpdate);
             RTUI rtUI = new RTUI(UiBase);
 
-            //UiBase.Enabled = false;
+            UiBase.Enabled = false;
         }
 
         public static void ToggleUI()

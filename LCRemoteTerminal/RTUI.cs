@@ -20,8 +20,8 @@ namespace RemoteTerminal
         public override int MinWidth => 200;
         public override int MinHeight => 200;
         public override Vector2 DefaultAnchorMin => new Vector2(0.1f, 0.1f);
-        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.33f);
-        public override Vector2 DefaultPosition => new Vector2(100, 200);
+        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.37f);
+        public override Vector2 DefaultPosition => new Vector2(100, 220);
         public override bool CanDragAndResize => false;
 
         int selectedMoon = 0;
@@ -43,6 +43,11 @@ namespace RemoteTerminal
             InputFieldRef terminalInput = UIFactory.CreateInputField(terminal, "TerminalInput", "");
             ButtonRef terminalButton = UIFactory.CreateButton(terminal, "TerminalSubmit", "Toggle Door/Disable Turret/Mine");
 
+            //Moon weather
+            GameObject moonWeather = UIFactory.CreateHorizontalGroup(vLayout, "MoonWeather", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
+            Text moonWeatherLabel = UIFactory.CreateLabel(moonWeather, "MoonWeatherLabel", "Shows weather of moons");
+            ButtonRef moonWeatherButton = UIFactory.CreateButton(moonWeather, "MoonWeatherButton", "Show Weather");
+
             //Route to Moon
             GameObject routeMoon = UIFactory.CreateHorizontalGroup(vLayout, "RouteMoon", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
             CreateMoonDropdown(routeMoon);
@@ -61,10 +66,18 @@ namespace RemoteTerminal
             UIFactory.SetLayoutElement(terminalInput.GameObject, minWidth: 50, minHeight: 30);
             UIFactory.SetLayoutElement(terminalButton.GameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
             UIFactory.SetLayoutElement(routeButton.GameObject, minWidth: 50, minHeight: 30);
+            UIFactory.SetLayoutElement(moonWeatherLabel.gameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
+            UIFactory.SetLayoutElement(moonWeatherButton.GameObject, minWidth: 50, minHeight: 30);
             UIFactory.SetLayoutElement(scanLabel.gameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
             UIFactory.SetLayoutElement(scanButton.GameObject, minWidth: 50, minHeight: 30);
             UIFactory.SetLayoutElement(helpLabel.gameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
             UIFactory.SetLayoutElement(helpButton.GameObject, minWidth: 50, minHeight: 30);
+
+            moonWeatherButton.OnClick = () =>
+            {
+                string[] chatInput = { "/moons" };
+                HUDManagerPatch.userTerminal(chatInput);
+            };
 
             terminalButton.OnClick = () =>
             {
