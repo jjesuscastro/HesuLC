@@ -13,7 +13,7 @@ namespace RemoteTerminal
         UnityEngine.GameObject menu;
         private const string modGUID = "hesukastro.RemoteTerminal";
         private const string modName = "Remote Terminal";
-        private const string modVersion = "1.1.0";
+        private const string modVersion = "1.1.2";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;

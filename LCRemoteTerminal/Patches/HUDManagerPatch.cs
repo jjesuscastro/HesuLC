@@ -157,7 +157,7 @@ namespace RemoteTerminal.Patches
 
         public static void help(ref TMPro.TMP_InputField ___chatTextField)
         {
-            Utils.displayMessage("Remote Terminal 1.1.0", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
+            Utils.displayMessage("Remote Terminal 1.1.2", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
                 "<size=60%>/moons </size><size=50%>List moon weathers</size>\n" +
                 "<size=60%>/moons [moonName] </size><size=50%>Reroute to moon</size>\n" +
                 "<size=60%>/scan </size><size=50%>Scan objects</size>\n" +
