@@ -66,16 +66,23 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UniverseLib.Mono, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UniverseLib.Mono.1.5.1\lib\net35\UniverseLib.Mono.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\HUDManagerPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI.cs" />
+    <Compile Include="RTUI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

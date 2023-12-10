@@ -15,7 +15,7 @@ namespace RemoteTerminal.Patches
     [HarmonyPatch(typeof(HUDManager))]
     internal class HUDManagerPatch
     {
-        public static string[] moons = new string[] { "company", "experimentation", "assurance", "vow", "offense", "march", "rend", "dine", "titan" };
+        public static string[] moons = new string[] { "Company", "Experimentation", "Assurance", "Vow", "Offense", "March", "Rend", "Dine", "Titan" };
 
         static Terminal terminal;
 
@@ -41,22 +41,13 @@ namespace RemoteTerminal.Patches
         }
 
 
-        static bool menuOpen = false;
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
         static void updatePatch()
         {
             if (UnityInput.Current.GetKeyDown("F10"))
             {
-                if (!menuOpen)
-                {
-                    UI.openMenu();
-                    menuOpen = true;
-                } else
-                {
-                    UI.closeMenu();
-                    menuOpen = false;
-                }
+                RemoteTerminalBase.ToggleUI();
             }
         }
 
@@ -93,7 +84,7 @@ namespace RemoteTerminal.Patches
 
             if (action.Equals("/moons"))
             {
-                if (moons.Any(input.Contains))
+                if (moons.Contains(input, StringComparer.OrdinalIgnoreCase))
                 {
                     await Task.Delay(250);
                     terminal.currentText = "";
@@ -166,7 +157,7 @@ namespace RemoteTerminal.Patches
 
         public static void help(ref TMPro.TMP_InputField ___chatTextField)
         {
-            Utils.displayMessage("Remote Terminal 1.1.0", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
+            Utils.displayMessage("Remote Terminal 1.1.3", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
                 "<size=60%>/moons </size><size=50%>List moon weathers</size>\n" +
                 "<size=60%>/moons [moonName] </size><size=50%>Reroute to moon</size>\n" +
                 "<size=60%>/scan </size><size=50%>Scan objects</size>\n" +
