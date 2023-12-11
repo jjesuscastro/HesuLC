@@ -1,0 +1,7 @@
+{
+    "name": "LCRemoteTerminal",
+    "version_number": "1.1.4",
+    "website_url": "",
+    "description": "Access Terminal commands through in-game chat and new UI",
+    "dependencies": []
+}

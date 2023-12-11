@@ -47,14 +47,18 @@ namespace LethalCheater.Patches
             }
         }
 
-        static bool menuOpen = false;
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
         static void updatePatch()
         {
-            if (UnityInput.Current.GetKeyDown("F10"))
+            if (UnityInput.Current.GetKeyDown(UnityEngine.KeyCode.F10))
             {
                 LethalCheaterBase.ToggleUI();
+            }
+
+            if(UnityInput.Current.GetKeyDown(UnityEngine.KeyCode.Escape))
+            {
+                LethalCheaterBase.DisableUI();
             }
         }
 

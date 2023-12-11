@@ -13,9 +13,9 @@ namespace LethalCheater
     [BepInPlugin(modGUID, modName, modVersion)]
     public class LethalCheaterBase : BaseUnityPlugin
     {
-        private const string modGUID = "hesukastro.LethalCheater";
-        private const string modName = "Cheater";
-        private const string modVersion = "1.0.0";
+        public const string modGUID = "hesukastro.LethalCheater";
+        public const string modName = "Lethal Cheater";
+        public const string modVersion = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         public static ConfigEntry<string> playerName;
@@ -32,7 +32,7 @@ namespace LethalCheater
                 Instance = this;
 
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
-            mls.LogInfo("Start RT Mod");
+            mls.LogInfo("Start LethalCheater Mod");
 
             playerName = Config.Bind<string>("Player", "playerName", "", "Player name used for teleporting");
 
@@ -67,6 +67,16 @@ namespace LethalCheater
         {
             LcUI.UpdatePlayerDropdown();
             UiBase.Enabled = !UiBase.Enabled;
+
+            if (UiBase.Enabled)
+            {
+                LcUI.SetActive(true);
+            }
+        }
+
+        public static void DisableUI()
+        {
+            UiBase.Enabled = false;
         }
 
         void UiUpdate()

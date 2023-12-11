@@ -10,16 +10,16 @@ namespace RemoteTerminal
     [BepInPlugin(modGUID, modName, modVersion)]
     public class RemoteTerminalBase : BaseUnityPlugin
     {
-        private const string modGUID = "hesukastro.RemoteTerminal";
-        private const string modName = "Remote Terminal";
-        private const string modVersion = "1.1.3";
+        public const string modGUID = "hesukastro.RemoteTerminal";
+        public const string modName = "Remote Terminal";
+        public const string modVersion = "1.1.4";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;
         public static ManualLogSource mls;
 
         public static UIBase UiBase { get; private set; }
-
+        internal static RTUI rtUI { get; private set; }
         void Awake()
         {
             if (Instance == null)
@@ -49,7 +49,7 @@ namespace RemoteTerminal
         void OnInitialized()
         {
             UiBase = UniversalUI.RegisterUI("RemoteTerminal.UI", UiUpdate);
-            RTUI rtUI = new RTUI(UiBase);
+            rtUI = new RTUI(UiBase);
 
             UiBase.Enabled = false;
         }
@@ -57,6 +57,16 @@ namespace RemoteTerminal
         public static void ToggleUI()
         {
             UiBase.Enabled = !UiBase.Enabled;
+
+            if(UiBase.Enabled)
+            {
+                rtUI.SetActive(true);
+            }
+        }
+
+        public static void DisableUI()
+        {
+            UiBase.Enabled = false;
         }
 
         void UiUpdate()

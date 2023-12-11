@@ -11,13 +11,13 @@ namespace RemoteTerminal
     {
         public RTUI(UIBase owner) : base(owner) { }
 
-        public override string Name => "Remote Terminal";
+        public override string Name => $"{RemoteTerminalBase.modName} v{RemoteTerminalBase.modVersion}";
         public override int MinWidth => 200;
         public override int MinHeight => 200;
         public override Vector2 DefaultAnchorMin => new Vector2(0.1f, 0.1f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.37f);
         public override Vector2 DefaultPosition => new Vector2(100, 220);
-        public override bool CanDragAndResize => false;
+        public override bool CanDragAndResize => true;
 
         int selectedMoon = 0;
 
@@ -25,10 +25,6 @@ namespace RemoteTerminal
         {
             Rect.offsetMin = new Vector2(15, 20);
             Rect.offsetMax = new Vector2(15, 20);
-
-            //Title
-            Text panelTitle = UIFactory.CreateLabel(ContentRoot, "RemoteTerminalLabel", "\tRemote Terminal");
-            UIFactory.SetLayoutElement(panelTitle.gameObject, minWidth: 200, minHeight: 30);
 
             //Vertical Layout Group
             GameObject vLayout = UIFactory.CreateVerticalGroup(ContentRoot, "Contents", true, false, true, true, 15, new Vector4(10, 0, 10, 0));
@@ -62,6 +58,17 @@ namespace RemoteTerminal
                 HUDManagerPatch.userTerminal(chatInput);
                 terminalInput.Text = string.Empty;
             };
+
+            UIFactory.SetLayoutElement(terminalButton.GameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
+            UIFactory.SetLayoutElement(terminalInput.GameObject, minWidth: 50, minHeight: 30);
+        }
+
+        public override void ConstructUI()
+        {
+            base.ConstructUI();
+
+            GameObject closeBUtton = GameObject.Find("CloseButton");
+            closeBUtton.SetActive(false);
         }
 
         ButtonRef CreateButtonWithLabel(GameObject parent, string name, string text, string buttonLabel)

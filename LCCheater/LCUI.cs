@@ -12,13 +12,13 @@ namespace LethalCheater
     {
         public LCUI(UIBase owner) : base(owner) { }
 
-        public override string Name => "Lethal Cheater";
+        public override string Name => $"{LethalCheaterBase.modName} v{LethalCheaterBase.modVersion}";
         public override int MinWidth => 200;
         public override int MinHeight => 200;
         public override Vector2 DefaultAnchorMin => new Vector2(0.1f, 0.1f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.6f);
         public override Vector2 DefaultPosition => new Vector2(-250, 220);
-        public override bool CanDragAndResize => false;
+        public override bool CanDragAndResize => true;
 
         Dropdown playerDropdown;
         string[] playerList;
@@ -28,10 +28,6 @@ namespace LethalCheater
         {
             Rect.offsetMin = new Vector2(15, 20);
             Rect.offsetMax = new Vector2(15, 20);
-
-            //Title
-            Text panelTitle = UIFactory.CreateLabel(ContentRoot, "LethalCheaterLabel", "\tLethal Cheater");
-            UIFactory.SetLayoutElement(panelTitle.gameObject, minWidth: 200, minHeight: 30);
 
             //Vertical Layout Group
             GameObject vLayout = UIFactory.CreateVerticalGroup(ContentRoot, "Contents", true, false, true, true, 15, new Vector4(10, 0, 10, 0));
@@ -90,6 +86,13 @@ namespace LethalCheater
             UIFactory.SetLayoutElement(addCreditsButton.GameObject, minWidth: 50, minHeight: 30);
         }
 
+        public override void ConstructUI()
+        {
+            base.ConstructUI();
+
+            GameObject closeBUtton = GameObject.Find("CloseButton");
+            closeBUtton.SetActive(false);
+        }
 
         Toggle CreateToggle(GameObject parent, string name, string text)
         {

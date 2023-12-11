@@ -43,9 +43,14 @@ namespace RemoteTerminal.Patches
         [HarmonyPrefix]
         static void updatePatch()
         {
-            if (UnityInput.Current.GetKeyDown("F10"))
+            if (UnityInput.Current.GetKeyDown(UnityEngine.KeyCode.F10))
             {
                 RemoteTerminalBase.ToggleUI();
+            }
+
+            if (UnityInput.Current.GetKeyDown(UnityEngine.KeyCode.Escape))
+            {
+                RemoteTerminalBase.DisableUI();
             }
         }
 
@@ -155,7 +160,7 @@ namespace RemoteTerminal.Patches
 
         public static void help(ref TMPro.TMP_InputField ___chatTextField)
         {
-            Utils.displayMessage("Remote Terminal 1.1.3", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
+            Utils.displayMessage($"Remote Terminal v{RemoteTerminalBase.modVersion}", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
                 "<size=60%>/moons </size><size=50%>List moon weathers</size>\n" +
                 "<size=60%>/moons [moonName] </size><size=50%>Reroute to moon</size>\n" +
                 "<size=60%>/scan </size><size=50%>Scan objects</size>\n" +
