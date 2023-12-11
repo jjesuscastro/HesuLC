@@ -35,18 +35,18 @@ namespace LethalCheater
             Text clientSidedHeader = UIFactory.CreateLabel(vLayout, "ClientSidedHeader", "Client Sided Cheats");
             UIFactory.SetLayoutElement(clientSidedHeader.gameObject, minWidth: 200, minHeight: 30);
 
-            Toggle godMode = CreateToggle(vLayout, "GodMode", "God Mode");
-            Toggle infSprint = CreateToggle(vLayout, "InfSprint", "Infinite Sprint");
+            Toggle godMode = UIUtils.CreateToggle(vLayout, "GodMode", "God Mode");
+            Toggle infSprint = UIUtils.CreateToggle(vLayout, "InfSprint", "Infinite Sprint");
 
             Text serverSidedHeader = UIFactory.CreateLabel(vLayout, "ServerSidedHeader", "Server Sided Cheats");
             UIFactory.SetLayoutElement(serverSidedHeader.gameObject, minWidth: 200, minHeight: 30);
 
             //Kill Player
-            CreateButtonWithLabel(vLayout, "Suicide", "Kill Self", "Suicide").OnClick = () => {
+            UIUtils.CreateButtonWithLabel(vLayout, "Suicide", "Kill Self", "Suicide").OnClick = () => {
                 HUDManagerPatch.killPlayer();
             };
 
-            CreateDropdownWithSubmit(vLayout, out playerDropdown, "TeleportPlayer", "Teleport", OnPlayerValueChanged).OnClick = () => {
+            UIUtils.CreateDropdownWithSubmit(vLayout, out playerDropdown, "TeleportPlayer", "Teleport", OnPlayerValueChanged).OnClick = () => {
                 HUDManagerPatch.delayedTeleport(playerList[selectedPlayer]);
             };
 
@@ -55,13 +55,13 @@ namespace LethalCheater
             InputFieldRef addCreditsInput = UIFactory.CreateInputField(addCredits, "AddCreditsInput", "");
             ButtonRef addCreditsButton = UIFactory.CreateButton(addCredits, "AddCreditsSubmit", "Add Credits");
 
-            CreateButtonWithLabel(vLayout, "ToggleLights", "Toggle Ship Lights On/Off", "Toggle Lights").OnClick = () => {
+            UIUtils.CreateButtonWithLabel(vLayout, "ToggleLights", "Toggle Ship Lights On/Off", "Toggle Lights").OnClick = () => {
                 HUDManagerPatch.toggleLights();
             };
 
             Text hostHeader = UIFactory.CreateLabel(vLayout, "HostHeader", "Host-only Cheats");
             UIFactory.SetLayoutElement(hostHeader.gameObject, minWidth: 200, minHeight: 30);
-            CreateButtonWithLabel(vLayout, "AutoQuota", "Automatically fulfill quota", "Auto Quota").OnClick = () => {
+            UIUtils.CreateButtonWithLabel(vLayout, "AutoQuota", "Automatically fulfill quota", "Auto Quota").OnClick = () => {
                 HUDManagerPatch.autoQuota();
             };
 
@@ -94,48 +94,6 @@ namespace LethalCheater
             closeBUtton.SetActive(false);
         }
 
-        Toggle CreateToggle(GameObject parent, string name, string text)
-        {
-            GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 10, new Vector4(0, 5, 0, 5));
-            Toggle toggle;
-            Text label = UIFactory.CreateLabel(gameObject, $"{name}Text", $"{text}");
-            label.alignment = TextAnchor.MiddleCenter;
-            GameObject GO = UIFactory.CreateToggle(gameObject, $"{name}Toggle", out toggle, out label);
-
-            toggle.isOn = false;
-
-            UIFactory.SetLayoutElement(label.gameObject, minWidth: 180, minHeight: 30, preferredWidth: 180);
-            UIFactory.SetLayoutElement(toggle.gameObject, minWidth: 30, minHeight: 30);
-            UIFactory.SetLayoutElement(GO, minWidth: 200, minHeight: 30);
-
-            return toggle;
-        }
-
-        ButtonRef CreateDropdownWithSubmit(GameObject parent, out Dropdown dropdown, string name, string label, System.Action<int> OnValueChanged)
-        {
-            GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
-
-            GameObject dropdownGameObject = UIFactory.CreateDropdown(gameObject, $"{name}Dropdown", out dropdown, "", 12, OnValueChanged);
-            ButtonRef button = UIFactory.CreateButton(gameObject, $"{name}Button", $"{label}");
-
-            UIFactory.SetLayoutElement(dropdownGameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
-            UIFactory.SetLayoutElement(button.GameObject, minWidth: 50, minHeight: 30);
-            return button;
-        }
-
-        ButtonRef CreateButtonWithLabel(GameObject parent, string name, string text, string buttonLabel)
-        {
-            //Moon weather
-            GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
-            Text label = UIFactory.CreateLabel(gameObject, $"{name}Label", $"{text}");
-            ButtonRef buttonRef = UIFactory.CreateButton(gameObject, $"{name}Button", $"{buttonLabel}");
-
-            UIFactory.SetLayoutElement(label.gameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
-            UIFactory.SetLayoutElement(buttonRef.GameObject, minWidth: 50, minHeight: 30);
-
-            return buttonRef;
-        }
-
         public void UpdatePlayerDropdown()
         {
             playerList = Utils.getPlayerList();
@@ -155,7 +113,5 @@ namespace LethalCheater
         {
             selectedPlayer = i;
         }
-
-        // override other methods as desired
     }
 }

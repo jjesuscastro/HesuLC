@@ -1,4 +1,5 @@
-﻿using RemoteTerminal.Patches;
+﻿using HesuLC;
+using RemoteTerminal.Patches;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ namespace RemoteTerminal
         public override Vector2 DefaultPosition => new Vector2(100, 220);
         public override bool CanDragAndResize => true;
 
+        Dropdown moonDropdown;
+        string[] moonList;
         int selectedMoon = 0;
 
         protected override void ConstructPanelContent()
@@ -34,21 +37,21 @@ namespace RemoteTerminal
             InputFieldRef terminalInput = UIFactory.CreateInputField(terminal, "TerminalInput", "");
             ButtonRef terminalButton = UIFactory.CreateButton(terminal, "TerminalSubmit", "Toggle Door/Disable Turret/Mine");
 
-            CreateButtonWithLabel(vLayout, "MoonWeather", "Show weather of moons", "Show Weather").OnClick = () =>
+            UIUtils.CreateButtonWithLabel(vLayout, "MoonWeather", "Show weather of moons", "Show Weather").OnClick = () =>
             {
                 string[] chatInput = { "/moons" };
                 HUDManagerPatch.userTerminal(chatInput);
             };
 
-            CreateDropdownWithSubmit(vLayout, "RouteToMoon", "Go To Moon",HUDManagerPatch.moons, OnMoonValueChanged, HUDManagerPatch.moons[selectedMoon]).OnClick = () => {
+            UIUtils.CreateDropdownWithSubmit(vLayout, out moonDropdown, "GoToMoon", "Go To Moon", OnMoonValueChanged).OnClick = () => {
                 string[] chatInput = { "/moons", HUDManagerPatch.moons[selectedMoon] };
                 HUDManagerPatch.userTerminal(chatInput);
             };
 
-            CreateButtonWithLabel(vLayout, "Scan", "Scan scraps in current moon", "Scan").OnClick = () => {
+            UIUtils.CreateButtonWithLabel(vLayout, "Scan", "Scan scraps in current moon", "Scan").OnClick = () => {
                 HUDManagerPatch.scanItems();
             };
-            CreateButtonWithLabel(vLayout, "Help", "Shows available commands for RemoteTerminal", "Help").OnClick = () => {
+            UIUtils.CreateButtonWithLabel(vLayout, "Help", "Shows available commands for RemoteTerminal", "Help").OnClick = () => {
                 HUDManagerPatch.help();
             };
 
@@ -71,47 +74,24 @@ namespace RemoteTerminal
             closeBUtton.SetActive(false);
         }
 
-        ButtonRef CreateButtonWithLabel(GameObject parent, string name, string text, string buttonLabel)
+        public void UpdateMoonDropdown()
         {
-            //Moon weather
-            GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
-            Text label = UIFactory.CreateLabel(gameObject, $"{name}Label", $"{text}");
-            ButtonRef buttonRef = UIFactory.CreateButton(gameObject, $"{name}Button", $"{buttonLabel}");
+            moonList = HUDManagerPatch.moons;
+            moonDropdown.ClearOptions();
 
-            UIFactory.SetLayoutElement(label.gameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
-            UIFactory.SetLayoutElement(buttonRef.GameObject, minWidth: 50, minHeight: 30);
+            List<Dropdown.OptionData> dropdownItems = new List<Dropdown.OptionData>();
 
-            return buttonRef;
-        }
-
-        ButtonRef CreateDropdownWithSubmit(GameObject parent, string name, string label, string[] items, System.Action<int> OnValueChanged, string defaultItem = "")
-        {
-            GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 0, new Vector4(0, 5, 0, 5));
-
-            Dropdown dropdown;
-            GameObject dropdownGameObject = UIFactory.CreateDropdown(gameObject, $"{name}Dropdown", out dropdown, "Company", 12, OnValueChanged);
-            
-
-            List<Dropdown.OptionData> moonItems = new List<Dropdown.OptionData>();
-
-            foreach(string s in items)
+            foreach (string s in moonList)
             {
-                moonItems.Add(new Dropdown.OptionData(s));
+                dropdownItems.Add(new Dropdown.OptionData(s));
             }
 
-            dropdown.AddOptions(moonItems);
-            ButtonRef button = UIFactory.CreateButton(gameObject, $"{name}Button", $"{label}");
-
-            UIFactory.SetLayoutElement(dropdownGameObject, minWidth: 150, minHeight: 30, preferredWidth: 150);
-            UIFactory.SetLayoutElement(button.GameObject, minWidth: 50, minHeight: 30);
-            return button;
+            moonDropdown.AddOptions(dropdownItems);
         }
 
         void OnMoonValueChanged(int x)
         {
             selectedMoon = x;
         }
-
-        // override other methods as desired
     }
 }

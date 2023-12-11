@@ -56,6 +56,7 @@ namespace RemoteTerminal
 
         public static void ToggleUI()
         {
+            rtUI.UpdateMoonDropdown();
             UiBase.Enabled = !UiBase.Enabled;
 
             if(UiBase.Enabled)
