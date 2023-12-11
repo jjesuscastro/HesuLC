@@ -15,38 +15,6 @@ namespace LethalCheater.Patches
         static Terminal terminal;
         static ShipTeleporter[] shipTeleporters;
 
-        [HarmonyPatch("SubmitChat_performed")]
-        [HarmonyPrefix]
-        static void interceptTextChat(ref TMPro.TMP_InputField ___chatTextField)
-        {
-            String[] chatInput = ___chatTextField.text.Split(' ');
-
-            switch (chatInput[0])
-            {
-                case "/credits":
-                    addCredits(chatInput, ref ___chatTextField);
-                    break;
-                case "/tp":
-                    teleportOut(ref ___chatTextField);
-                    break;
-                case "/lights":
-                    toggleLights(ref ___chatTextField);
-                    break;
-                case "/fire":
-                    killPlayer(ref ___chatTextField);
-                    break;
-                case "/quota":
-                    autoQuota(ref ___chatTextField);
-                    break;
-                case "/god":
-                    toggleGodMode(ref ___chatTextField);
-                    break;
-                case "/is":
-                    toggleInfiniteSprint(ref ___chatTextField);
-                    break;
-            }
-        }
-
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
         static void updatePatch()

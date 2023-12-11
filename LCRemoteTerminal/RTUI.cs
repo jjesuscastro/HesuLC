@@ -16,7 +16,7 @@ namespace RemoteTerminal
         public override int MinWidth => 200;
         public override int MinHeight => 200;
         public override Vector2 DefaultAnchorMin => new Vector2(0.1f, 0.1f);
-        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.37f);
+        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.33f);
         public override Vector2 DefaultPosition => new Vector2(100, 220);
         public override bool CanDragAndResize => true;
 
@@ -50,9 +50,6 @@ namespace RemoteTerminal
 
             UIUtils.CreateButtonWithLabel(vLayout, "Scan", "Scan scraps in current moon", "Scan").OnClick = () => {
                 HUDManagerPatch.scanItems();
-            };
-            UIUtils.CreateButtonWithLabel(vLayout, "Help", "Shows available commands for RemoteTerminal", "Help").OnClick = () => {
-                HUDManagerPatch.help();
             };
 
             terminalButton.OnClick = () =>

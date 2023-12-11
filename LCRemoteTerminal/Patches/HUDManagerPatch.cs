@@ -17,28 +17,6 @@ namespace RemoteTerminal.Patches
 
         static Terminal terminal;
 
-        [HarmonyPatch("SubmitChat_performed")]
-        [HarmonyPrefix]
-        static void interceptTextChat(ref TMPro.TMP_InputField ___chatTextField)
-        {
-            String[] chatInput = ___chatTextField.text.Split(' ');
-
-            switch (chatInput[0])
-            {
-                case "/rt":
-                case "/moons":
-                    useTerminal(chatInput, ref ___chatTextField);
-                    break;
-                case "/scan":
-                    scanItems(ref ___chatTextField);
-                    break;
-                case "/help":
-                    help(ref ___chatTextField);
-                    break;
-            }
-        }
-
-
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
         static void updatePatch()
@@ -151,23 +129,5 @@ namespace RemoteTerminal.Patches
                 ___chatTextField.text = "";
         }
         #endregion
-
-        public static void help()
-        {
-            TMP_InputField temp = null;
-            help(ref temp);
-        }
-
-        public static void help(ref TMPro.TMP_InputField ___chatTextField)
-        {
-            Utils.displayMessage($"Remote Terminal v{RemoteTerminalBase.modVersion}", "<size=60%>/rt [door/turret] </size><size=50%>Open/close doors; Disable turret</size>\n" +
-                "<size=60%>/moons </size><size=50%>List moon weathers</size>\n" +
-                "<size=60%>/moons [moonName] </size><size=50%>Reroute to moon</size>\n" +
-                "<size=60%>/scan </size><size=50%>Scan objects</size>\n" +
-                "<size=60%>/tp </size><size=50%>Activate teleporter</size>");
-
-            if (___chatTextField != null)
-                ___chatTextField.text = "";
-        }
     }
 }
