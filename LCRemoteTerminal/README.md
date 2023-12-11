@@ -1,41 +1,31 @@
 # Lethal Company: Remote Terminal
 
+![RemoteTerminal Icon](https://raw.githubusercontent.com/jjesuscastro/HesuLC/master/LCRemoteTerminal/icon.png "RemoteTerminal Icon")
+
 ## Summary
 
-Open/close doors and disable turrets through chat and **new UI**.
+Open/close doors and disable turrets through the UI.
 
 ## Details
 
 Doing a solo run in Lethal Company is nearly impossible if you are spawned in a moon with numerous doors and turrets.
 
-This mod lets you run terminal commands wherever you are through in-game chat.
+This mod lets you run terminal commands wherever you are through the UI.
 
 Does not include Buy and Bestiary commands.
 
 ## How-to
 
-To use, either press **F10** to open the menu or press "/" to activate the chat box and type:
+To use, press **F10** to open the menu.
 
-![RemoteTerminal UI](https://i.imgur.com/Lf8RPih.png "RemoteTerminal UI")
-
-- **"/rt [door/turret code]"** - Open/close door; disable turret
-- **"/moons"** - Show list of moons and their weather
-- **"/moons [moonName]"** - Reroute to moon
-- **"/scan"** - Scan objects in moon and approximate value
-- **"/help"** - Show list of commands
-
-[moonNames]:
-- company
-- experimentation
-- assurance
-- vow
-- offense
-- march
-- rend
-- dine
-- titan
+![RemoteTerminal UI](https://raw.githubusercontent.com/jjesuscastro/HesuLC/master/LCRemoteTerminal/UI.png "RemoteTerminal UI")
 
 ## Version Changes
+**1.1.4**
+> - Removed in-game chat commands
+> - Updated UI
+> - Added moon weather button
+
 **1.1.3**
 > - Added UniverseLib
 > - Updated UI
