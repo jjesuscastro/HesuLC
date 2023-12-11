@@ -31,6 +31,18 @@ namespace LethalCheater.Patches
             ___sprintMeter = 1f;
         }
 
+        public static void setGodMode(bool _godMode)
+        {
+            godMode = _godMode;
+            Utils.displayMessage("GodMode Status", $"GodMode {(godMode ? "enabled" : "disabled")}");
+        }
+
+        public static void setInfSprint(bool _infSprint)
+        {
+            infSprint = _infSprint;
+            Utils.displayMessage("Infinite Sprint Status", $"Infinite Sprint {(infSprint ? "enabled" : "disabled")}");
+        }
+
         public static void toggleGodMode()
         {
             godMode = !godMode;

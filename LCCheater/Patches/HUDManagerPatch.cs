@@ -3,10 +3,9 @@ using HarmonyLib;
 using System;
 using HesuLC;
 using System.Threading.Tasks;
-using UnityEngine.Events;
 using System.Linq;
 using BepInEx;
-using RemoteTerminal;
+using TMPro;
 
 namespace LethalCheater.Patches
 {
@@ -34,7 +33,7 @@ namespace LethalCheater.Patches
                     toggleLights(ref ___chatTextField);
                     break;
                 case "/fire":
-                    killPlayer(chatInput, ref ___chatTextField);
+                    killPlayer(ref ___chatTextField);
                     break;
                 case "/quota":
                     autoQuota(ref ___chatTextField);
@@ -55,16 +54,7 @@ namespace LethalCheater.Patches
         {
             if (UnityInput.Current.GetKeyDown("F10"))
             {
-                if (!menuOpen)
-                {
-                    UI.openMenu();
-                    menuOpen = true;
-                }
-                else
-                {
-                    UI.closeMenu();
-                    menuOpen = false;
-                }
+                LethalCheaterBase.ToggleUI();
             }
         }
 
@@ -93,7 +83,36 @@ namespace LethalCheater.Patches
                     teleporter.buttonTrigger.onInteract.Invoke(Utils.getPlayerClient());
             }
         }
+
+        public static async void delayedTeleport(string playerName)
+        {
+            shipTeleporters = (ShipTeleporter[])UnityEngine.Object.FindObjectsOfType(typeof(ShipTeleporter));
+
+            int index = Utils.getPlayerIndex(playerName);
+            if (index == -1)
+            {
+                LethalCheaterBase.mls.LogInfo($"Cannot find player {playerName}");
+                return;
+            }
+
+            StartOfRound.Instance.mapScreen.SwitchRadarTargetAndSync(index);
+            await Task.Delay(250);
+
+            ShipTeleporter[] array = UnityEngine.Object.FindObjectsOfType<ShipTeleporter>();
+            foreach (ShipTeleporter teleporter in array)
+            {
+                if (!teleporter.isInverseTeleporter && teleporter.buttonTrigger.interactable)
+                    teleporter.buttonTrigger.onInteract.Invoke(Utils.getPlayerClient());
+            }
+        }
+
         #endregion
+
+        public static void addCredits(string[] chatInput)
+        {
+            TMP_InputField temp = null;
+            addCredits(chatInput, ref temp);
+        }
 
         static void addCredits(string[] chatInput, ref TMPro.TMP_InputField ___chatTextField)
         {
@@ -108,7 +127,14 @@ namespace LethalCheater.Patches
 
             Utils.displayMessage("Credits added", $"Total Credits: {currentCredits + addCredits}");
 
-            ___chatTextField.text = "";
+            if(___chatTextField != null)
+                ___chatTextField.text = "";
+        }
+
+        public static void toggleLights()
+        {
+            TMP_InputField temp = null;
+            toggleLights(ref temp);
         }
 
         static void toggleLights(ref TMPro.TMP_InputField ___chatTextField)
@@ -118,26 +144,35 @@ namespace LethalCheater.Patches
 
             lightSwitch.onInteract.Invoke(Utils.getPlayerClient());
 
-            ___chatTextField.text = "";
+            if (___chatTextField != null)
+                ___chatTextField.text = "";
         }
 
-        static void killPlayer(string[] chatInput, ref TMPro.TMP_InputField ___chatTextField)
+        public static void killPlayer()
         {
-            if (chatInput.Length <= 1)
-            {
-                ___chatTextField.text = "";
-                return;
-            }
+            TMP_InputField temp = null;
+            killPlayer(ref temp);
+        }
 
-            PlayerControllerB player = Utils.getPlayerObject(chatInput[1]);
+        static void killPlayer(ref TMPro.TMP_InputField ___chatTextField)
+        {
+            PlayerControllerB player = Utils.getPlayerClient();
             if (player == null)
             {
-                ___chatTextField.text = "";
+                if (___chatTextField != null)
+                    ___chatTextField.text = "";
                 return;
             }
 
             player.KillPlayer(UnityEngine.Vector3.zero);
-            ___chatTextField.text = "";
+            if (___chatTextField != null)
+                ___chatTextField.text = "";
+        }
+
+        public static void autoQuota()
+        {
+            TMP_InputField temp = null;
+            autoQuota(ref temp);
         }
 
         static void autoQuota(ref TMPro.TMP_InputField ___chatTextField)
@@ -149,7 +184,8 @@ namespace LethalCheater.Patches
 
             Utils.displayMessage("Quota", "Quota auto fulfilled");
 
-            ___chatTextField.text = "";
+            if (___chatTextField != null)
+                ___chatTextField.text = "";
         }
 
         static void toggleGodMode(ref TMPro.TMP_InputField ___chatTextField)

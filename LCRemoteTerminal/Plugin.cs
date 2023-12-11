@@ -10,7 +10,6 @@ namespace RemoteTerminal
     [BepInPlugin(modGUID, modName, modVersion)]
     public class RemoteTerminalBase : BaseUnityPlugin
     {
-        UnityEngine.GameObject menu;
         private const string modGUID = "hesukastro.RemoteTerminal";
         private const string modName = "Remote Terminal";
         private const string modVersion = "1.1.3";

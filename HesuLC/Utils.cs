@@ -35,6 +35,13 @@ namespace HesuLC
             return players.FirstOrDefault(p => p.playerUsername.ToLower() == playerName.ToLower());
         }
 
+        public static string[] getPlayerList()
+        {
+            PlayerControllerB[] players = UnityEngine.Object.FindObjectsByType<PlayerControllerB>(UnityEngine.FindObjectsSortMode.None);
+
+            return players.Select(p => p.playerUsername).ToArray();
+        }
+
         public static PlayerControllerB getPlayerClient()
         {
             PlayerControllerB[] players = (PlayerControllerB[])UnityEngine.Object.FindObjectsByType<PlayerControllerB>(UnityEngine.FindObjectsSortMode.None);

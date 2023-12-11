@@ -2,23 +2,29 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using HesuLC;
 using LethalCheater.Patches;
 using System;
+using UnityEngine;
+using UniverseLib.UI;
 
 namespace LethalCheater
 {
     [BepInPlugin(modGUID, modName, modVersion)]
     public class LethalCheaterBase : BaseUnityPlugin
     {
-        private const String modGUID = "hesukastro.LethalCheater";
-        private const String modName = "Cheater";
-        private const String modVersion = "1.0.0";
+        private const string modGUID = "hesukastro.LethalCheater";
+        private const string modName = "Cheater";
+        private const string modVersion = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         public static ConfigEntry<string> playerName;
 
         private static LethalCheaterBase Instance;
         public static ManualLogSource mls;
+
+        public static UIBase UiBase { get; private set; }
+        internal static LCUI LcUI { get; private set; }
 
         void Awake()
         {
@@ -33,6 +39,38 @@ namespace LethalCheater
             harmony.PatchAll(typeof(LethalCheaterBase));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
             harmony.PatchAll(typeof(HUDManagerPatch));
+
+            float startupDelay = 1f;
+            UniverseLib.Config.UniverseLibConfig config = new UniverseLib.Config.UniverseLibConfig
+            {
+                Disable_EventSystem_Override = false,
+                Force_Unlock_Mouse = true,
+            };
+
+            UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
+        }
+
+        void LogHandler(string message, LogType type)
+        {
+            // ...
+        }
+
+        void OnInitialized()
+        {
+            UiBase = UniversalUI.RegisterUI("LethalCheater.UI", UiUpdate);
+            LcUI = new LCUI(UiBase);
+
+            UiBase.Enabled = false;
+        }
+
+        public static void ToggleUI()
+        {
+            LcUI.UpdatePlayerDropdown();
+            UiBase.Enabled = !UiBase.Enabled;
+        }
+
+        void UiUpdate()
+        {
         }
     }
 }
