@@ -34,7 +34,7 @@ namespace RemoteTerminal.Patches
 
         #region TerminalCommands
 
-        public static void userTerminal(string[] chatInput)
+        public static void useTerminal(string[] chatInput)
         {
             TMP_InputField temp = null;
             useTerminal(chatInput, ref temp);
@@ -52,6 +52,11 @@ namespace RemoteTerminal.Patches
             delayedInput(terminal, action, input);
             if (___chatTextField != null)
                 ___chatTextField.text = "";
+        }
+
+        public static void transmitMessage(string message)
+        {
+            HUDManager.Instance.UseSignalTranslatorServerRpc(message);
         }
 
         async static void delayedInput(Terminal terminal, string action, string input)

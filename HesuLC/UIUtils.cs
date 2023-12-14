@@ -16,14 +16,13 @@ namespace HesuLC
         {
             GameObject gameObject = UIFactory.CreateHorizontalGroup(parent, $"{name}", true, false, true, true, 10, new Vector4(0, 5, 0, 5));
             Toggle toggle;
-            Text label = UIFactory.CreateLabel(gameObject, $"{name}Text", $"{text}");
-            label.alignment = TextAnchor.MiddleCenter;
+            Text label;
             GameObject GO = UIFactory.CreateToggle(gameObject, $"{name}Toggle", out toggle, out label);
-
+            label.alignment = TextAnchor.MiddleLeft;
+            
+            label.text = $"\t{text}";
             toggle.isOn = false;
 
-            UIFactory.SetLayoutElement(label.gameObject, minWidth: 180, minHeight: 30, preferredWidth: 180);
-            UIFactory.SetLayoutElement(toggle.gameObject, minWidth: 30, minHeight: 30);
             UIFactory.SetLayoutElement(GO, minWidth: 200, minHeight: 30);
 
             return toggle;
