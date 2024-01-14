@@ -9,6 +9,7 @@ namespace LethalCheater.Patches
     {
         public static bool godMode = false;
         public static bool infSprint = false;
+        public static bool ignDeath = false;
 
         [HarmonyPatch("Update")]
         [HarmonyPrefix]
@@ -31,6 +32,13 @@ namespace LethalCheater.Patches
             ___sprintMeter = 1f;
         }
 
+        [HarmonyPatch("AllowPlayerDeath")]
+        [HarmonyPrefix]
+        static bool ignoreDeath()
+        {
+            return !ignDeath;
+        }
+
         public static void setGodMode(bool _godMode)
         {
             godMode = _godMode;
@@ -43,15 +51,10 @@ namespace LethalCheater.Patches
             Utils.displayMessage("Infinite Sprint Status", $"Infinite Sprint {(infSprint ? "enabled" : "disabled")}");
         }
 
-        public static void toggleGodMode()
+        public static void setIgnoreDeath(bool _ignoreDeath)
         {
-            godMode = !godMode;
-            Utils.displayMessage("GodMode Status", $"GodMode {(godMode ? "enabled" : "disabled")}");
-        }
-        public static void toggleInfiniteSprint()
-        {
-            infSprint = !infSprint;
-            Utils.displayMessage("Infinite Sprint Status", $"Infinite Sprint {(infSprint ? "enabled" : "disabled")}");
+            ignDeath = _ignoreDeath;
+            Utils.displayMessage("Ignore Death Status", $"Ignore Death {(ignDeath ? "enabled" : "disabled")}");
         }
     }
 }

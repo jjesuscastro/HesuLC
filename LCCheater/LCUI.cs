@@ -16,7 +16,7 @@ namespace LethalCheater
         public override int MinWidth => 200;
         public override int MinHeight => 200;
         public override Vector2 DefaultAnchorMin => new Vector2(0.1f, 0.1f);
-        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.6f);
+        public override Vector2 DefaultAnchorMax => new Vector2(0.28f, 0.63f);
         public override Vector2 DefaultPosition => new Vector2(-250, 220);
         public override bool CanDragAndResize => true;
 
@@ -36,6 +36,7 @@ namespace LethalCheater
             UIFactory.SetLayoutElement(clientSidedHeader.gameObject, minWidth: 200, minHeight: 30);
 
             Toggle godMode = UIUtils.CreateToggle(vLayout, "GodMode", "God Mode");
+            Toggle ignoreDeath = UIUtils.CreateToggle(vLayout, "IgnoreDeat", "Ignore Death");
             Toggle infSprint = UIUtils.CreateToggle(vLayout, "InfSprint", "Infinite Sprint");
 
             Text serverSidedHeader = UIFactory.CreateLabel(vLayout, "ServerSidedHeader", "Server Sided Cheats");
@@ -75,6 +76,11 @@ namespace LethalCheater
             godMode.onValueChanged.AddListener(delegate
             {
                 PlayerControllerBPatch.setGodMode(godMode.isOn);
+            });
+
+            ignoreDeath.onValueChanged.AddListener(delegate
+            {
+                PlayerControllerBPatch.setIgnoreDeath(ignoreDeath.isOn);
             });
 
             infSprint.onValueChanged.AddListener(delegate

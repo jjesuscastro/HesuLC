@@ -159,19 +159,5 @@ namespace LethalCheater.Patches
             if (___chatTextField != null)
                 ___chatTextField.text = "";
         }
-
-        static void toggleGodMode(ref TMPro.TMP_InputField ___chatTextField)
-        {
-            PlayerControllerBPatch.toggleGodMode();
-
-            ___chatTextField.text = "";
-        }
-
-        static void toggleInfiniteSprint(ref TMPro.TMP_InputField ___chatTextField)
-        {
-            PlayerControllerBPatch.toggleInfiniteSprint();
-
-            ___chatTextField.text = "";
-        }
     }
 }

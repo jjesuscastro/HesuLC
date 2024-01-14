@@ -12,7 +12,7 @@ namespace RemoteTerminal
     {
         public const string modGUID = "hesukastro.RemoteTerminal";
         public const string modName = "Remote Terminal";
-        public const string modVersion = "1.1.4";
+        public const string modVersion = "1.1.5";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;

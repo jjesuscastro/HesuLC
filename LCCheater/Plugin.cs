@@ -15,7 +15,7 @@ namespace LethalCheater
     {
         public const string modGUID = "hesukastro.LethalCheater";
         public const string modName = "Lethal Cheater";
-        public const string modVersion = "1.0.0";
+        public const string modVersion = "1.1.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         public static ConfigEntry<string> playerName;
