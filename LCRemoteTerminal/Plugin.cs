@@ -3,7 +3,8 @@ using BepInEx.Logging;
 using HarmonyLib;
 using RemoteTerminal.Patches;
 using UnityEngine;
-using UniverseLib.UI;
+using System.Reflection;
+using System.IO;
 
 namespace RemoteTerminal
 {
@@ -12,14 +13,15 @@ namespace RemoteTerminal
     {
         public const string modGUID = "hesukastro.RemoteTerminal";
         public const string modName = "Remote Terminal";
-        public const string modVersion = "1.1.5";
+        public const string modVersion = "1.2.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;
         public static ManualLogSource mls;
 
-        public static UIBase UiBase { get; private set; }
-        internal static RTUI rtUI { get; private set; }
+        AssetBundle assetBundle;
+        static GameObject ui;
+
         void Awake()
         {
             if (Instance == null)
@@ -32,42 +34,33 @@ namespace RemoteTerminal
             harmony.PatchAll(typeof(HUDManagerPatch));
 
             float startupDelay = 1f;
-            UniverseLib.Config.UniverseLibConfig config = new UniverseLib.Config.UniverseLibConfig
+
+            LoadAssetBundle();
+
+        }
+
+        void LoadAssetBundle()
+        {
+            string sAeemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            assetBundle = AssetBundle.LoadFromFile(Path.Combine(sAeemblyLocation, "lcremter"));
+
+            if(assetBundle == null)
             {
-                Disable_EventSystem_Override = false,
-                Force_Unlock_Mouse = true,
-            };
+                mls.LogError("Cannot Load Asset");
+                return;
+            }
 
-            UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
-        }
-
-        void LogHandler(string message, LogType type)
-        {
-            // ...
-        }
-
-        void OnInitialized()
-        {
-            UiBase = UniversalUI.RegisterUI("RemoteTerminal.UI", UiUpdate);
-            rtUI = new RTUI(UiBase);
-
-            UiBase.Enabled = false;
+            ui = assetBundle.LoadAsset<GameObject>("Assets/UI.prefab");
+            //Maybe you can instantiate the ui from here
         }
 
         public static void ToggleUI()
         {
-            rtUI.UpdateMoonDropdown();
-            UiBase.Enabled = !UiBase.Enabled;
-
-            if(UiBase.Enabled)
-            {
-                rtUI.SetActive(true);
-            }
+            Instantiate(ui);
         }
 
         public static void DisableUI()
         {
-            UiBase.Enabled = false;
         }
 
         void UiUpdate()

@@ -6,7 +6,6 @@ using HesuLC;
 using LethalCheater.Patches;
 using System;
 using UnityEngine;
-using UniverseLib.UI;
 
 namespace LethalCheater
 {
@@ -23,8 +22,6 @@ namespace LethalCheater
         private static LethalCheaterBase Instance;
         public static ManualLogSource mls;
 
-        public static UIBase UiBase { get; private set; }
-        internal static LCUI LcUI { get; private set; }
 
         void Awake()
         {
@@ -41,46 +38,16 @@ namespace LethalCheater
             harmony.PatchAll(typeof(HUDManagerPatch));
 
             float startupDelay = 1f;
-            UniverseLib.Config.UniverseLibConfig config = new UniverseLib.Config.UniverseLibConfig
-            {
-                Disable_EventSystem_Override = false,
-                Force_Unlock_Mouse = true,
-            };
-
-            UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
-        }
-
-        void LogHandler(string message, LogType type)
-        {
-            // ...
-        }
-
-        void OnInitialized()
-        {
-            UiBase = UniversalUI.RegisterUI("LethalCheater.UI", UiUpdate);
-            LcUI = new LCUI(UiBase);
-
-            UiBase.Enabled = false;
         }
 
         public static void ToggleUI()
         {
-            LcUI.UpdatePlayerDropdown();
-            UiBase.Enabled = !UiBase.Enabled;
-
-            if (UiBase.Enabled)
-            {
-                LcUI.SetActive(true);
-            }
+           
         }
 
         public static void DisableUI()
         {
-            UiBase.Enabled = false;
         }
 
-        void UiUpdate()
-        {
-        }
     }
 }
