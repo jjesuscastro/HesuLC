@@ -13,14 +13,15 @@ namespace RemoteTerminal
     {
         public const string modGUID = "hesukastro.RemoteTerminal";
         public const string modName = "Remote Terminal";
-        public const string modVersion = "1.2.0";
+        public const string modVersion = "2.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         private static RemoteTerminalBase Instance;
         public static ManualLogSource mls;
 
         AssetBundle assetBundle;
-        static GameObject ui;
+        static GameObject UIPrefab;
+        static GameObject UIGameObject;
 
         void Awake()
         {
@@ -42,7 +43,7 @@ namespace RemoteTerminal
         void LoadAssetBundle()
         {
             string sAeemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            assetBundle = AssetBundle.LoadFromFile(Path.Combine(sAeemblyLocation, "lcremter"));
+            assetBundle = AssetBundle.LoadFromFile(Path.Combine(sAeemblyLocation, "rtuibundle/uibundle"));
 
             if(assetBundle == null)
             {
@@ -50,22 +51,30 @@ namespace RemoteTerminal
                 return;
             }
 
-            ui = assetBundle.LoadAsset<GameObject>("Assets/UI.prefab");
-            //Maybe you can instantiate the ui from here
+            UIPrefab = assetBundle.LoadAsset<GameObject>("Assets/RemoteTerminalUI.prefab");
         }
 
         public static void ToggleUI()
         {
-            Instantiate(ui);
+            if (UIGameObject == null)
+            {
+                UIGameObject = Instantiate(UIPrefab);
+            }
+            else
+            {
+                UIGameObject.SetActive(!UIGameObject.activeInHierarchy);
+            }
+
+            Cursor.visible = UIGameObject.activeInHierarchy;
+            Cursor.lockState = UIGameObject.activeInHierarchy ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
         public static void DisableUI()
         {
-        }
+            if (UIGameObject == null)
+                return;
 
-        void UiUpdate()
-        {
-            // Called once per frame when your UI is being displayed.
+            UIGameObject.SetActive(false);
         }
     }
 }

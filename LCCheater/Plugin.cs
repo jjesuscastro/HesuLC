@@ -5,6 +5,8 @@ using HarmonyLib;
 using HesuLC;
 using LethalCheater.Patches;
 using System;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace LethalCheater
@@ -14,7 +16,7 @@ namespace LethalCheater
     {
         public const string modGUID = "hesukastro.LethalCheater";
         public const string modName = "Lethal Cheater";
-        public const string modVersion = "1.1.0";
+        public const string modVersion = "2.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
         public static ConfigEntry<string> playerName;
@@ -22,6 +24,9 @@ namespace LethalCheater
         private static LethalCheaterBase Instance;
         public static ManualLogSource mls;
 
+        AssetBundle assetBundle;
+        static GameObject UIPrefab;
+        static GameObject UIGameObject;
 
         void Awake()
         {
@@ -38,15 +43,45 @@ namespace LethalCheater
             harmony.PatchAll(typeof(HUDManagerPatch));
 
             float startupDelay = 1f;
+
+            LoadAssetBundle();
+        }
+
+        void LoadAssetBundle()
+        {
+            string sAeemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            assetBundle = AssetBundle.LoadFromFile(Path.Combine(sAeemblyLocation, "lcuibundle/uibundle"));
+
+            if (assetBundle == null)
+            {
+                mls.LogError("Cannot Load Asset");
+                return;
+            }
+
+            UIPrefab = assetBundle.LoadAsset<GameObject>("Assets/LethalCheaterUI.prefab");
         }
 
         public static void ToggleUI()
         {
-           
+           if(UIGameObject == null)
+            {
+                UIGameObject = Instantiate(UIPrefab);
+            }
+           else
+            {
+                UIGameObject.SetActive(!UIGameObject.activeInHierarchy);
+            }
+
+            Cursor.visible = UIGameObject.activeInHierarchy;
+            Cursor.lockState = UIGameObject.activeInHierarchy ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
         public static void DisableUI()
         {
+            if (UIGameObject == null)
+                return;
+
+            UIGameObject.SetActive(false);
         }
 
     }
