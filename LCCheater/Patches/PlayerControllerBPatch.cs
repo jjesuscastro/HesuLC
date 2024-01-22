@@ -10,6 +10,19 @@ namespace LethalCheater.Patches
         public static bool godMode = false;
         public static bool infSprint = false;
         public static bool ignDeath = false;
+        private static bool disableLookInput = false;
+
+        [HarmonyPatch("PlayerLookInput")]
+        [HarmonyPrefix]
+        static void playerLookInputPatch(ref bool ___disableLookInput)
+        {
+            ___disableLookInput = disableLookInput;
+        }
+
+        public static void SetLookInputLock(bool _disableLookInput)
+        {
+            disableLookInput = _disableLookInput;
+        }
 
         [HarmonyPatch("Update")]
         [HarmonyPrefix]

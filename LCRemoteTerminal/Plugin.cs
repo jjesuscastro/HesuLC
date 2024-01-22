@@ -33,6 +33,7 @@ namespace RemoteTerminal
 
             harmony.PatchAll(typeof(RemoteTerminalBase));
             harmony.PatchAll(typeof(HUDManagerPatch));
+            harmony.PatchAll(typeof(PlayerControllerBPatch));
 
             float startupDelay = 1f;
 
@@ -65,6 +66,7 @@ namespace RemoteTerminal
                 UIGameObject.SetActive(!UIGameObject.activeInHierarchy);
             }
 
+            PlayerControllerBPatch.SetLookInputLock(UIGameObject.activeInHierarchy);
             Cursor.visible = UIGameObject.activeInHierarchy;
             Cursor.lockState = UIGameObject.activeInHierarchy ? CursorLockMode.None : CursorLockMode.Locked;
         }
@@ -75,6 +77,7 @@ namespace RemoteTerminal
                 return;
 
             UIGameObject.SetActive(false);
+            PlayerControllerBPatch.SetLookInputLock(UIGameObject.activeInHierarchy);
         }
     }
 }

@@ -72,6 +72,7 @@ namespace LethalCheater
                 UIGameObject.SetActive(!UIGameObject.activeInHierarchy);
             }
 
+            PlayerControllerBPatch.SetLookInputLock(UIGameObject.activeInHierarchy);
             Cursor.visible = UIGameObject.activeInHierarchy;
             Cursor.lockState = UIGameObject.activeInHierarchy ? CursorLockMode.None : CursorLockMode.Locked;
         }
@@ -82,6 +83,7 @@ namespace LethalCheater
                 return;
 
             UIGameObject.SetActive(false);
+            PlayerControllerBPatch.SetLookInputLock(UIGameObject.activeInHierarchy);
         }
 
     }
